@@ -11,10 +11,11 @@ public class Gun : MonoBehaviour
     [SerializeField] float damage;
     [SerializeField] float range = 100f;
     [SerializeField] float fireRate = 15f;
+
     [SerializeField] LayerMask enemyLayer;
 
-    [SerializeField] int maxAmmo = 10;
-    [SerializeField] int currentAmmo;
+    public int maxAmmo = 10;
+    public int currentAmmo = 0;
     [SerializeField] float reloadTime = 1f;
     bool isReloading = false;
 
@@ -43,16 +44,8 @@ public class Gun : MonoBehaviour
     {
         muzzleflash.Play();
 
-        currentAmmo--;
-
         if (isReloading)
             return;
-
-        if(currentAmmo <= 0)
-        {
-            StartCoroutine(ReloadAmmo());
-            return;
-        }
 
         if(Input.GetMouseButton(0) && Time.time >= nextTimeToFire)
         {
@@ -77,6 +70,16 @@ public class Gun : MonoBehaviour
     }
     private void Shoot()
     {
+        Debug.Log("Inside Shoot()");
+        if (currentAmmo <= 0)
+        {
+            Debug.Log("Current Ammo");
+            return;
+        }
+        muzzleflash.Play();
+
+        currentAmmo--;
+
         RaycastHit hitEnemy;
         Ray ray = Camera.main.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2));
 
@@ -99,6 +102,15 @@ public class Gun : MonoBehaviour
         else
         {
             Debug.DrawLine(ray.origin, ray.origin + ray.direction * 100, Color.green);
+        }
+    }
+
+    public void AddAmmo(int maxAmount)
+    {
+        currentAmmo += maxAmmo;
+        if(currentAmmo > maxAmmo)
+        {
+            currentAmmo = maxAmmo;
         }
     }
 }
