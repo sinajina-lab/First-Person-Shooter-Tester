@@ -6,6 +6,15 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float walkSpeed = 10f;
     [SerializeField] float runSpeed = 30f;
+    [SerializeField] float jumpHeight = 3f;
+
+    [SerializeField] Transform groundCheck;
+    [SerializeField] LayerMask groundMask;
+    [SerializeField] float gravity = -9.81f;
+    [SerializeField] float groundDistance = 0.2f;
+    //Check how much vertical motion chanhes
+    Vector3 velocity;
+    bool isGrounded;
 
     [SerializeField] float turnSmoothTime = 0.2f;
     float turnSmoothVelocity;
@@ -27,7 +36,7 @@ public class PlayerController : MonoBehaviour
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         Vector2 inputDir = input.normalized;
 
-        if(inputDir != Vector2.zero)
+        if (inputDir != Vector2.zero)
         {
             float targetRotation = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg + cameraT.eulerAngles.y;
             transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref turnSmoothVelocity, turnSmoothTime);
@@ -43,5 +52,7 @@ public class PlayerController : MonoBehaviour
 
         float animationSpeedPercent = ((running) ? 1 : .5f) * inputDir.magnitude;
         animator.SetFloat("speedPercent", animationSpeedPercent, speedSmoothTime, Time.deltaTime);
+
     }
+     
 }

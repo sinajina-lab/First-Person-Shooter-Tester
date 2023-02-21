@@ -18,6 +18,6 @@ public class AmmoText : MonoBehaviour
     }
     void UpdateAmmoText()
     {
-       // TMPro.TextMeshProUGUI ammoText = $"{gun.currentAmmo} / {gun.maxAmmo}";
+        ammoText.SetText($"{gun.currentAmmo} / {gun.maxAmmo}");
     }
 }
